@@ -1,0 +1,15 @@
+{
+  "name": "deepstream.io-example-plugins",
+  "version": "1.0.0",
+  "description": "A variety of all custom plugin examples",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@deepstream/protobuf": "^1.0.0-rc.4",
+    "@deepstream/types": "^1.0.0-rc.3"
+  }
+}
