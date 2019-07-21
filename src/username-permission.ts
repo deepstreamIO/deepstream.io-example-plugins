@@ -13,7 +13,19 @@ export default class UsernamePermission extends DeepstreamPlugin implements Deep
         super()
     }
 
+    /**
+     * The permission API is more functional due to the performance implications in deepstream, hence we path through alot of the data! This 
+     * also allows you to go a bit crazy with implementations.
+     * 
+     * Whats important is you return an error or valid callback per permission, and keep in mind event though it is async you really want this
+     * to be as quick and lightweight as possible!
+     * 
+     * You have full access to the message via the `message` object and `authData` which is the `serverData` returned via the authentication plugin.
+     */
     canPerformAction(username: string, message: Message, callback: PermissionCallback, authData: JSONObject, socketWrapper: SocketWrapper, passItOn: any): void {
+        // In this example just check that there is a name to the message and it contains the username. This is a very naive example as it means the user
+        // can't invoke RPCs and scopes all realtime interaction to just one client. However if you used `authData.orgName` this would allow you to do multi-tenancy
+        // permissions!
         if (message.name && message.name.includes(username)) {
             callback(socketWrapper, message, passItOn, null, true)
             return

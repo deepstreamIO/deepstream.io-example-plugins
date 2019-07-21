@@ -23,7 +23,12 @@ export default class FileStorage extends DeepstreamPlugin implements DeepstreamS
         }
     }
 
-    public set(recordName: string, version: number, data: any, callback: StorageWriteCallback, metaData?: any): void {
+    /**
+     * Method to save a record to storage. Since storage is longer term we usually combined the version and head
+     * together into one object. However that is an implementation detail, and some databases have a concept of version 
+     * you can share!
+     */
+    public set(recordName: string, version: number, data: any, callback: StorageWriteCallback): void {
         fs.writeFile(`${this.pluginOptions.directory}/${recordName}`, JSON.stringify({ v: version, d: data }), (err) => {
             if (err) {
                 callback(err.toString())
@@ -32,7 +37,13 @@ export default class FileStorage extends DeepstreamPlugin implements DeepstreamS
             }
         })
     }
-    public get(recordName: string, callback: StorageReadCallback, metaData?: any): void {
+
+    /**
+     * Method to get a record from storage.
+     * 
+     * If the record doesn't exist you return a version of -1 and data as null
+     */
+    public get(recordName: string, callback: StorageReadCallback): void {
         fs.readFile(`${this.pluginOptions.directory}/${recordName}`, (err, content) => {
             if (err) {
                 callback(null, -1, null)
@@ -42,7 +53,11 @@ export default class FileStorage extends DeepstreamPlugin implements DeepstreamS
             callback(null, value.v, value.d)
         })
     }
-    public delete(recordName: string, callback: StorageWriteCallback, metaData?: any): void {
+
+    /**
+     * Method to delete a record from storage.
+     */
+    public delete(recordName: string, callback: StorageWriteCallback): void {
         fs.unlink(`${this.pluginOptions.directory}/${recordName}`, (err) => {
             if (err) {
                 callback(err.toString())
@@ -52,6 +67,10 @@ export default class FileStorage extends DeepstreamPlugin implements DeepstreamS
         })
     }
 
+    /**
+     * Method to delete multiple records at once. This is used to reduce the amount of IO and 
+     * callbacks.
+     */
     public deleteBulk(recordNames: string[], callback: StorageWriteCallback, metaData?: any): void {
         let count = 0
         const cb = () => {

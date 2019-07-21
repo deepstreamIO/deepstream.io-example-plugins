@@ -22,31 +22,38 @@ if (cluster.isMaster) {
     })
 }
 
+/**
+ * This class will allow deepstream to scale vertically using the cluster nodeJS approach. This is a POC,
+ * but demonstrates how the API works!
+ */
 export class VerticalClusterNode extends DeepstreamPlugin implements DeepstreamClusterNode {
     public static emitter = new EventEmitter()
     public description: string = 'Vertical Cluster Message Bus'
     private callbacks = new Map<string, any>()
 
-    constructor (pluginConfig: any, services: DeepstreamServices, private config: DeepstreamConfig) {
+    constructor (options: any, services: DeepstreamServices, private config: DeepstreamConfig) {
         super()
     }
 
-    public send (message: Message, metaData?: any): void {
+    /**
+     * Broadcast a message to all nodes in the server
+     */ 
+    public send (message: Message): void {
         process.send!(JSON.stringify({ message, fromServer: this.config.serverName }))
     }
 
+    /**
+     * Send a message to a specific version
+     */
     public sendDirect (serverName: string, message: Message, metaData?: any): void {
         process.send!(JSON.stringify({ toServer: serverName, fromServer: this.config.serverName, message }))
     }
 
+    /**
+     * Subscribe to all messages on a certain topic on the server
+     */
     public subscribe<SpecificMessage> (stateRegistryTopic: TOPIC, callback: (message: SpecificMessage, originServerName: string) => void): void {
         this.callbacks.set(TOPIC[stateRegistryTopic], callback)
         VerticalClusterNode.emitter.on(TOPIC[stateRegistryTopic], callback)
-    }
-
-    public async close (): Promise<void> {
-        for (const [topic, callback] of this.callbacks) {
-            VerticalClusterNode.emitter.off(topic, callback)
-        }
     }
 }
