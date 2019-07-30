@@ -1,5 +1,5 @@
-import { DeepstreamPlugin, ConnectionListener, DeepstreamServices, SocketWrapper, EVENT } from '@deepstream/types'
-import { TOPIC, EVENT_ACTION } from '@deepstream/protobuf/dist/types/all';
+import { TOPIC, EVENT_ACTION } from '@deepstream/protobuf/dist/types/all'
+import { DeepstreamPlugin, ConnectionListener, DeepstreamServices, SocketWrapper, EVENT } from '../ds-types/src'
 
 // The options your plugin can expect
 interface CustomPluginOptions {
@@ -7,12 +7,12 @@ interface CustomPluginOptions {
 }
 
 /**
- * This plugin will log the handshake data on login/logout and send a custom event to the logged-in 
+ * This plugin will log the handshake data on login/logout and send a custom event to the logged-in
  * client.
  */
 export default class CustomPlugin extends DeepstreamPlugin implements ConnectionListener {
     // This will be shown in deepstream startup logs, recommended to insert version
-    public description: 'My Custom Plugin'
+    public description = 'My Custom Plugin'
     // This will create a thing wrapper around the default logger with the CUSTOM_PLUGIN namespace
     private logger = this.services.logger.getNameSpace('CUSTOM_PLUGIN')
 
@@ -41,29 +41,29 @@ export default class CustomPlugin extends DeepstreamPlugin implements Connection
      * it async by just putting in a timeout. This is used to ensure the connection to a database or startup of a server
      * is complete before deepstream launched.
      */
-    async whenReady (): Promise<void> {
-        return new Promise(resolve => setTimeout(resolve, 1000))
+    public async whenReady (): Promise<void> {
+        return new Promise((resolve) => setTimeout(resolve, 1000))
     }
 
     /**
      * Same as whenReady, except on deepstream shutdown instead of startup.
      */
-    async close (): Promise<void> {
-        return new Promise(resolve => setTimeout(resolve, 1000))
+    public async close (): Promise<void> {
+        return new Promise((resolve) => setTimeout(resolve, 1000))
     }
 
     /**
      * This is called when client is authenticated with a SocketWrapper. This is a powerful little wrapper
-     * that abstracts away all the IO calls and allows you to interact directly via the socket regardless 
+     * that abstracts away all the IO calls and allows you to interact directly via the socket regardless
      * of the underlying implementation. Please note that this is only called after a client is authenticated!
      * Unauthenticated clients don't leave the scope of the connection-endpoint in order to minimize logic.
-     * 
-     * This call also has to be supported by the connection-endpoint. For example we don't consider a HTTP 
+     *
+     * This call also has to be supported by the connection-endpoint. For example we don't consider a HTTP
      * request authenticated request to count as an actual client, so this will only be called via websockets.
      */
-    onClientConnected (socketWrapper: SocketWrapper): void {
+    public onClientConnected (socketWrapper: SocketWrapper): void {
         // Note we are using the namespaced logger instead of the one on `this.services.logger`
-        this.logger.info(EVENT.INFO, `User logged in with handshake data: ${socketWrapper.getHandshakeData()}`)
+        this.logger.info(EVENT.INFO, `User logged in with handshake data: ${JSON.stringify(socketWrapper.getHandshakeData())}`)
 
         // This is a cheeky/advanced example of how you can use the SocketWrapper to directly send messages. As
         // users needs progress we will instead be creating official hooks going forward.
@@ -80,7 +80,7 @@ export default class CustomPlugin extends DeepstreamPlugin implements Connection
     /**
      * This is called when an authenticated client disconnects
      */
-    onClientDisconnected(socketWrapper: SocketWrapper): void {
-        this.logger.info(EVENT.INFO, `User logged in with handshake data: ${socketWrapper.getHandshakeData()}`)
+    public onClientDisconnected (socketWrapper: SocketWrapper): void {
+        this.logger.info(EVENT.INFO, `User logged in with handshake data: ${JSON.stringify(socketWrapper.getHandshakeData())}`)
     }
 }
