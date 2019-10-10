@@ -1,10 +1,11 @@
-import { DeepstreamPlugin, DeepstreamServices, UserAuthenticationCallback, DeepstreamAuthentication, DeepstreamLogger, LOG_LEVEL, NamespacedLogger, EVENT } from '@deepstream/types'
+import { DeepstreamPlugin, DeepstreamServices, DeepstreamLogger, LOG_LEVEL, NamespacedLogger, EVENT } from '@deepstream/types'
 import * as pino from 'pino'
+import { Dictionary } from 'ts-essentials'
 
 interface PinoLoggerOptions {
 }
 
-const DSToPino = {
+const DSToPino: Dictionary<string> = {
     [LOG_LEVEL.DEBUG]: 'debug',
     [LOG_LEVEL.FATAL]: 'fatal',
     [LOG_LEVEL.ERROR]: 'error',
@@ -13,8 +14,9 @@ const DSToPino = {
 }
 
 export default class PinoLogger extends DeepstreamPlugin implements DeepstreamLogger {
-    public description: 'Pino Logger';
-    private logger = pino()
+    public description = 'Pino Logger'
+    // @ts-ignore
+    private logger: any = pino()
 
     constructor (private pluginOptions: PinoLoggerOptions, private services: DeepstreamServices) {
         super()
@@ -79,11 +81,11 @@ export default class PinoLogger extends DeepstreamPlugin implements DeepstreamLo
     public getNameSpace (namespace: string): NamespacedLogger {
         return {
           shouldLog: this.shouldLog.bind(this),
-          fatal: this.log.bind(this, 'fatal', namespace),
-          error: this.log.bind(this, 'error', namespace),
-          warn: this.log.bind(this, 'warn', namespace),
-          info: this.log.bind(this, 'info', namespace),
-          debug: this.log.bind(this, 'debug', namespace),
+          fatal: this.log.bind(this, LOG_LEVEL.FATAL, namespace),
+          error: this.log.bind(this, LOG_LEVEL.ERROR, namespace),
+          warn: this.log.bind(this, LOG_LEVEL.WARN, namespace),
+          info: this.log.bind(this, LOG_LEVEL.INFO, namespace),
+          debug: this.log.bind(this, LOG_LEVEL.DEBUG, namespace),
         }
     }
 

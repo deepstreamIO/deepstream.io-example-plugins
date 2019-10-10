@@ -6,7 +6,7 @@ interface UsernamePermissionOptions {
 }
 
 export default class UsernamePermission extends DeepstreamPlugin implements DeepstreamPermission {
-    public description: 'Header Authentication';
+    public description = 'Header Authentication';
     private logger = this.services.logger.getNameSpace('USERNAME_PERMISSION')
 
     constructor (private pluginOptions: UsernamePermissionOptions, private services: DeepstreamServices) {
@@ -22,11 +22,11 @@ export default class UsernamePermission extends DeepstreamPlugin implements Deep
      * 
      * You have full access to the message via the `message` object and `authData` which is the `serverData` returned via the authentication plugin.
      */
-    canPerformAction(username: string, message: Message, callback: PermissionCallback, authData: JSONObject, socketWrapper: SocketWrapper, passItOn: any): void {
+    canPerformAction(socketWrapper: SocketWrapper, message: Message, callback: PermissionCallback, passItOn: any): void {
         // In this example just check that there is a name to the message and it contains the username. This is a very naive example as it means the user
         // can't invoke RPCs and scopes all realtime interaction to just one client. However if you used `authData.orgName` this would allow you to do multi-tenancy
         // permissions!
-        if (message.name && message.name.includes(username)) {
+        if (message.name && message.name.includes(socketWrapper.userId)) {
             callback(socketWrapper, message, passItOn, null, true)
             return
         }

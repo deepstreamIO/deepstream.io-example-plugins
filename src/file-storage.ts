@@ -1,4 +1,4 @@
-import { DeepstreamPlugin, DeepstreamServices, DeepstreamStorage, StorageWriteCallback, StorageReadCallback } from '@deepstream/types'
+import { DeepstreamPlugin, DeepstreamServices, DeepstreamStorage, StorageWriteCallback, StorageReadCallback, EVENT } from '@deepstream/types'
 import * as fs from 'fs'
 
 interface FileStorageOptions {
@@ -6,7 +6,7 @@ interface FileStorageOptions {
 }
 
 export default class FileStorage extends DeepstreamPlugin implements DeepstreamStorage {
-    public description: 'File Storage'
+    public description = 'File Storage'
     private logger = this.services.logger.getNameSpace('FILE_STORAGE')
 
     constructor (private pluginOptions: FileStorageOptions, private services: DeepstreamServices) {
@@ -15,11 +15,11 @@ export default class FileStorage extends DeepstreamPlugin implements DeepstreamS
 
     public init () {
         if (typeof this.pluginOptions.directory !== 'string') {
-            this.logger.fatal('Missing or invalid directory option')
+            this.logger.fatal(EVENT.ERROR, 'Missing or invalid directory option')
         }
         const exists = fs.existsSync(this.pluginOptions.directory)
         if (!exists) {
-            this.logger.fatal(`Missing directory ${this.pluginOptions.directory}`)
+            this.logger.fatal(EVENT.ERROR, `Missing directory ${this.pluginOptions.directory}`)
         }
     }
 

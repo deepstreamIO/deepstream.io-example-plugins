@@ -4,13 +4,19 @@
   "description": "A variety of all custom plugin examples",
   "main": "index.js",
   "scripts": {
+    "tsc": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@deepstream/protobuf": "^1.0.0-rc.4",
-    "@deepstream/types": "^1.0.0-rc.3",
-    "ioredis": "^4.11.2"
+    "@deepstream/protobuf": "^1.0.1",
+    "@deepstream/types": "^2.0.3",
+    "ioredis": "^4.14.1"
+  },
+  "devDependencies": {
+    "@types/pino": "^5.8.11",
+    "ts-essentials": "^3.0.2",
+    "typescript": "^3.6.4"
   }
 }

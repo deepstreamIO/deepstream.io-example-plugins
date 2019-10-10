@@ -1,13 +1,16 @@
-import { DeepstreamPlugin, DeepstreamServices, UserAuthenticationCallback, DeepstreamAuthentication } from '@deepstream/types'
+import { DeepstreamPlugin, DeepstreamServices, DeepstreamAuthentication, DeepstreamAuthenticationResult } from '@deepstream/types'
+import { Dictionary } from 'ts-essentials';
 
-const TOKENS = {
+const TOKENS: Dictionary<DeepstreamAuthenticationResult> = {
     'ABC': {
-        username: 'John',
+        isValid: true,
+        id: 'John',
         serverData: { admin: true },
         clientData: { theme: 'red' }
     },
     '123': {
-        username: 'Bob',
+        isValid: true,
+        id: 'Bob',
         serverData: { admin: false },
         clientData: { theme: 'blue' }
     }
@@ -16,7 +19,7 @@ interface TokenAuthenticationOptions {
 }
 
 export default class TokenAuthentication extends DeepstreamPlugin implements DeepstreamAuthentication {
-    public description: 'Token Authentication';
+    public description = 'Token Authentication'
     private logger = this.services.logger.getNameSpace('HEADER_AUTHENTICATION')
 
     constructor (private pluginOptions: TokenAuthenticationOptions, private services: DeepstreamServices) {
@@ -28,15 +31,19 @@ export default class TokenAuthentication extends DeepstreamPlugin implements Dee
      * 
      * The callback signature is as follows:
      * 
-     * ```
-     * callback(isValid, {
-     *   username: 'Bob',
-     *   serverData: {},
-     *   clientData: {}
-     * })
-     * ```
+     * If user is found:
      * 
-     * The username is the name to be used by permissioning as well as presence. It doesn't have to be unique, but
+     * return {
+     *  isValid: boolean,
+     *  id: uuid,
+     *  clientData: {}, // data to send to client on login or login error
+     *  serverData: {} // data used to authenticate users
+     * }
+     * 
+     * // If user is not found, return null
+     * return null
+     * 
+     * The username is the name to be used by permissions as well as presence. It doesn't have to be unique, but
      * if more than one user with the same name is logged in the system doesn't behave any differently! So if you want
      * each user to be unique you may need to add a uuid to distinguish between them.
      * 
@@ -48,21 +55,17 @@ export default class TokenAuthentication extends DeepstreamPlugin implements Dee
      * always recommended to use records because they are dynamic! ClientData should usually be login related, like session
      * expiry time or such.
      */
-    isValidUser(connectionData: any, authData: any, callback: UserAuthenticationCallback): void {
+    async isValidUser(connectionData: any, authData: any) {
         if (typeof authData.token !== 'string') {
-            callback(false, {
-                clientData: { error: 'Missing token' }
-            })
-            return
+            return null
         }
 
         if (TOKENS[authData.token]) {
-            callback(true, TOKENS[authData.token])
-            return
+            return TOKENS[authData.token]
         }
 
-        callback(false, {
-            clientData: { error: 'Invalid Token' }
-        })
+        // If an invalid token is provided then return null incase another auth
+        // handler can save the day
+        return null
     }
 }

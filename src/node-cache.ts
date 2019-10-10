@@ -5,7 +5,7 @@ interface NodeCacheOptions {
 }
 
 export default class NodeCache extends DeepstreamPlugin implements DeepstreamCache {
-    public description: 'Node Cache'
+    public description = 'Node Cache'
     private logger = this.services.logger.getNameSpace('NODE_CACHE')
     private cache = new Cache();
 

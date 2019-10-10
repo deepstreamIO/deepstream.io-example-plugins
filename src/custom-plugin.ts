@@ -1,5 +1,5 @@
 import { TOPIC, EVENT_ACTION } from '@deepstream/protobuf/dist/types/all'
-import { DeepstreamPlugin, ConnectionListener, DeepstreamServices, SocketWrapper, EVENT } from '../ds-types/src'
+import { DeepstreamPlugin, ConnectionListener, DeepstreamServices, SocketWrapper, EVENT } from '@deepstream/types'
 
 // The options your plugin can expect
 interface CustomPluginOptions {
@@ -31,7 +31,7 @@ export default class CustomPlugin extends DeepstreamPlugin implements Connection
             // This will inform deepstream a fatal error occured and will shutdown the server. This can be triggered at
             // any point of the plugin lifetime, and is useful for informing deepstream a unrecoverable event occured like
             // losing the connection to a cache or database
-            this.logger.fatal('Invalid or missing "requiredProperty"')
+            this.logger.fatal(EVENT.ERROR, 'Invalid or missing "requiredProperty"')
         }
     }
 
