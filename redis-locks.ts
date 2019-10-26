@@ -39,7 +39,6 @@ export default class RedisLocks extends DeepstreamPlugin implements DeepstreamLo
                 callback(false)
                 return
             }
-            console.log(result)
             this.client.expire(`DS_LOCK/${lock}`, this.options.lockTimeout / 1000, (err, result) => {
                 callback(true)
             })
