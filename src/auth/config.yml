@@ -1,0 +1,2 @@
+auth:
+  - path: ./auth/token-authentication

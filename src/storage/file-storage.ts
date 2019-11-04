@@ -9,7 +9,7 @@ export default class FileStorage extends DeepstreamPlugin implements DeepstreamS
     public description = 'File Storage'
     private logger = this.services.logger.getNameSpace('FILE_STORAGE')
 
-    constructor (private pluginOptions: FileStorageOptions, private services: DeepstreamServices) {
+    constructor (private pluginOptions: FileStorageOptions, private services: Readonly<DeepstreamServices>) {
         super()
     }
 

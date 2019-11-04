@@ -18,7 +18,7 @@ export default class PinoLogger extends DeepstreamPlugin implements DeepstreamLo
     // @ts-ignore
     private logger: any = pino()
 
-    constructor (private pluginOptions: PinoLoggerOptions, private services: DeepstreamServices) {
+    constructor (private pluginOptions: PinoLoggerOptions, private services: Readonly<DeepstreamServices>) {
         super()
     }
 

@@ -19,7 +19,7 @@ export default class CustomPlugin extends DeepstreamPlugin implements Connection
     // You need the constructor to access the plugin options and services. Please note that when creating
     // your own plugin via NodeJS and not via the config file you'll need to call the constructor yourself,
     // but I would recommend sticking to this API!
-    constructor (private options: CustomPluginOptions, private services: DeepstreamServices) {
+    constructor (private options: CustomPluginOptions, private services: Readonly<DeepstreamServices>) {
         super()
     }
 

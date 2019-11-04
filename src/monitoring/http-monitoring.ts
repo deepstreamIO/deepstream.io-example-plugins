@@ -16,7 +16,7 @@ export default class HTTPMonitoring extends DeepstreamPlugin implements Deepstre
         declined: number
     } } = {}
 
-    constructor (private pluginOptions: HTTPMonitoringOptions, private services: DeepstreamServices) {
+    constructor (private pluginOptions: HTTPMonitoringOptions, private services: Readonly<DeepstreamServices>) {
         super()
     }
 

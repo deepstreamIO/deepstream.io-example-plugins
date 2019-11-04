@@ -12,7 +12,7 @@ export default class RedisLocks extends DeepstreamPlugin implements DeepstreamLo
     private logger = this.services.logger.getNameSpace('REDIS_LOCKS')
     client: any;
 
-    constructor(private options: RedisLocksOptions, private services: DeepstreamServices) {
+    constructor(private options: RedisLocksOptions, private services: Readonly<DeepstreamServices>) {
         super();
     }
 

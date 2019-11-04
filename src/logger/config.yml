@@ -1,0 +1,2 @@
+logger:
+    path: './logger/pino-logger'

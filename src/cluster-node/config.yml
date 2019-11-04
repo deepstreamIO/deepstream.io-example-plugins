@@ -1,0 +1,2 @@
+clusterNode:
+  path: ./cluster-node/vertical-cluster-node

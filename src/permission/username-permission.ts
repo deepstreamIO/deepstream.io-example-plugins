@@ -1,6 +1,5 @@
 import { DeepstreamPlugin, DeepstreamServices, DeepstreamPermission, PermissionCallback, SocketWrapper } from '@deepstream/types'
 import { Message } from '@deepstream/protobuf/dist/types/messages';
-import { JSONObject } from '@deepstream/protobuf/dist/types/all';
 
 interface UsernamePermissionOptions {
 }
@@ -9,7 +8,7 @@ export default class UsernamePermission extends DeepstreamPlugin implements Deep
     public description = 'Header Authentication';
     private logger = this.services.logger.getNameSpace('USERNAME_PERMISSION')
 
-    constructor (private pluginOptions: UsernamePermissionOptions, private services: DeepstreamServices) {
+    constructor (private pluginOptions: UsernamePermissionOptions, private services: Readonly<DeepstreamServices>) {
         super()
     }
 

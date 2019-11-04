@@ -22,7 +22,7 @@ export default class TokenAuthentication extends DeepstreamPlugin implements Dee
     public description = 'Token Authentication'
     private logger = this.services.logger.getNameSpace('HEADER_AUTHENTICATION')
 
-    constructor (private pluginOptions: TokenAuthenticationOptions, private services: DeepstreamServices) {
+    constructor (private pluginOptions: TokenAuthenticationOptions, private services: Readonly<DeepstreamServices>) {
         super()
     }
 

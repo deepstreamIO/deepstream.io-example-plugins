@@ -26,7 +26,7 @@ if (cluster.isMaster) {
  * This class will allow deepstream to scale vertically using the cluster nodeJS approach. This is a POC,
  * but demonstrates how the API works!
  */
-export class VerticalClusterNode extends DeepstreamPlugin implements DeepstreamClusterNode {
+export default class VerticalClusterNode extends DeepstreamPlugin implements DeepstreamClusterNode {
     public static emitter = new EventEmitter()
     public description: string = 'Vertical Cluster Message Bus'
     private callbacks = new Map<string, any>()

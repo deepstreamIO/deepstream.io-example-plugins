@@ -1,0 +1,3 @@
+plugins:
+  custom:
+    path: './custom-plugin/custom-plugin'

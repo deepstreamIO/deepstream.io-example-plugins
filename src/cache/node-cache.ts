@@ -10,7 +10,7 @@ export default class NodeCache extends DeepstreamPlugin implements DeepstreamCac
     private cache = new Cache();
 
 
-    constructor (private pluginOptions: NodeCacheOptions, private services: DeepstreamServices) {
+    constructor (private pluginOptions: NodeCacheOptions, private services: Readonly<DeepstreamServices>) {
         super()
     }
 

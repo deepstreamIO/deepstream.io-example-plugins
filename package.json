@@ -11,12 +11,14 @@
   "license": "ISC",
   "dependencies": {
     "@deepstream/protobuf": "^1.0.1",
-    "@deepstream/types": "^2.0.3",
-    "ioredis": "^4.14.1"
+    "@deepstream/server": "^5.0.1",
+    "@deepstream/types": "^2.0.6",
+    "ioredis": "^4.14.1",
+    "pino": "^5.13.5"
   },
   "devDependencies": {
-    "@types/pino": "^5.8.11",
-    "ts-essentials": "^3.0.2",
+    "@types/pino": "^5.8.13",
+    "ts-essentials": "^3.0.3",
     "typescript": "^3.6.4"
   }
 }

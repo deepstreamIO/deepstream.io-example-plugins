@@ -1,0 +1,4 @@
+monitoring:
+    path: './monitoring/http-monitoring'
+    options:
+        url: /monitoring

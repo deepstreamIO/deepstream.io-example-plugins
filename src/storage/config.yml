@@ -1,0 +1,4 @@
+storage:
+    path: './storage/file-storage'
+    options:
+        directory: .
