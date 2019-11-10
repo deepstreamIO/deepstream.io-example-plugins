@@ -1,0 +1,7 @@
+auth:
+  - path: ./openid/openid-authentication
+    options:
+    # base url used by keycloak connect to validate the token
+    keycloakBaseUrl: https://localhost:8080/auth
+    # keycloak realm to validate against.
+    keycloakRealm: example-realm

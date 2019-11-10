@@ -13,7 +13,9 @@
     "@deepstream/protobuf": "^1.0.1",
     "@deepstream/server": "^5.0.1",
     "@deepstream/types": "^2.0.6",
+    "@types/keycloak-connect": "^4.5.1",
     "ioredis": "^4.14.1",
+    "keycloak-connect": "^7.0.1",
     "pino": "^5.13.5"
   },
   "devDependencies": {
