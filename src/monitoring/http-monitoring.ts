@@ -1,6 +1,6 @@
 import { Message, ACTIONS } from '@deepstream/protobuf/dist/types/messages'
 import { TOPIC, STATE_REGISTRY_TOPIC } from '@deepstream/protobuf/dist/types/all'
-import { DeepstreamPlugin, DeepstreamMonitoring, DeepstreamServices, LOG_LEVEL, EVENT, DeepstreamHTTPMeta, DeepstreamHTTPResponse, SocketUSerData } from '@deepstream/types'
+import { DeepstreamPlugin, DeepstreamMonitoring, DeepstreamServices, LOG_LEVEL, EVENT, DeepstreamHTTPMeta, DeepstreamHTTPResponse, SocketData } from '@deepstream/types'
 
 interface HTTPMonitoringOptions {
     url: string
@@ -56,9 +56,9 @@ export default class HTTPMonitoring extends DeepstreamPlugin implements Deepstre
 
 /**
  * Called when an authorized message is received
- * socketUserData passes { userId, serverData } from socketWrapper in order create rule based monitoring if required
+ * socketData receives socketWrapper in order to create rule based monitoring if required
  */
-    public onMessageReceived (message: Message, socketUserData: SocketUSerData): void {
+    public onMessageReceived (message: Message, socketData: SocketData): void {
         let actionsMap = this.receiveStats[TOPIC[message.topic]]
         if (!actionsMap) {
             actionsMap = {}
