@@ -56,7 +56,7 @@ export default class HTTPMonitoring extends DeepstreamPlugin implements Deepstre
 
 /**
  * Called when an authorized message is received
- * socketData receives socketWrapper in order to create rule based monitoring if required
+ * socketData receives socketWrapper in order to enable fined grained monitoring if required, per userId, serverData, etc
  */
     public onMessageReceived (message: Message, socketData: SocketData): void {
         let actionsMap = this.receiveStats[TOPIC[message.topic]]
